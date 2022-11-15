@@ -3,26 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
-
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <title>Frontend Mentor | Advice generator app</title>
 
   <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
   <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
+
+    .body {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .advice-section {
+      background-color: hsl(218, 23%, 16%);
+      height:100vh;
+      width:100vw;
+    }
+
+    .container {
+      height:100%;
+      width:100%;
+    }
+
+    .card {
+      background-color: hsl(217, 19%, 24%);
+      font-family: 'Manrope', sans-serif;
+      color:white;
+      position:relative;
+    }
+
+    .quote {
+      font-size:28px;
+      color:hsl(193, 38%, 86%);
+    }
+    .advice {
+      font-size:10px;
+      color:hsl(150, 100%, 66%);
+      letter-spacing: 2px;
+    }
+
+    .button {
+      background-color:hsl(150, 100%, 66%);
+      height:50px;
+      width:50px;
+      padding:5px;
+      border-radius:100%;
+      position:absolute;
+      bottom:-12%;
+      margin-left: -24px;
+    }
+
+    .dice {
+      margin:auto;
+    }
+
+    .flex-wrapper {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+    }
+
   </style>
 </head>
 <body>
+<main>
+  <section class="advice-section">
+    <div class="container">
+      <div class="flex-wrapper">
+      <div class="p-5 pb-12 text-center card shadow-lg rounded-lg max-w-md flex-row items-center">
+        <p class="advice">ADVICE # <span id="advice-number"></span></p>
+        <h1 class="quote py-5">Advice text goes here</h1>
+        <img id="desktop-devider" class="md:visible" src="images/pattern-divider-desktop.svg" alt="divider">
+        <img id="mobile-devider" class="sm:invisible" src="images/pattern-divider-mobile.svg" alt="divider">
+        <button onclick="getAdvice()" class="button">
+          <img class="dice" src="images/icon-dice.svg" alt="dice">
+        </button>
+      </div>
+    </div>
+    </div>
+  </section>
+</main>
 
-  Advice #<!-- Advice ID goes here -->
+<script>
 
-  "<!-- Advice text goes here -->"
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
+  const quote = document.querySelector('.quote');
+  const adviceNum = document.querySelector('#advice-number');
+
+  getAdvice();
+
+  // api fetch
+  function getAdvice() { fetch('https://api.adviceslip.com/advice')
+    .then (response => {
+      return response.json();
+    })
+    //.then ((data) => console.log(data))
+    .then (adviceData => { const advice = adviceData.slip;
+      quote.textContent = advice.advice;
+      adviceNum.textContent = advice.id;
+      console.log(advice);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
+
+
+
+  /*async function getAdvice() {
+    let response = await fetch('https://api.adviceslip.com/advice');
+    let data = await response.json()
+    return data;
+
+    
+  }
+*/
+
+</script>
+
 </body>
 </html>
